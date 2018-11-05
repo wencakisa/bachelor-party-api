@@ -28,6 +28,16 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+# Rubocop (directly from git source)
+gem 'rubocop', git: 'https://github.com/bbatsov/rubocop'
+
+# Devise (w/ token authentication)
+gem 'devise'
+gem 'devise_token_auth'
+
+# CanCanCan gem used for authorization
+gem 'cancancan', '~> 2.0'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
