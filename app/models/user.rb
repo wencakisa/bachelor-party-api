@@ -7,6 +7,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
+  ROLES = %i[admin guide customer]
+
   # TODO: Implement user roles and use them with CanCanCan
   # https://github.com/CanCanCommunity/cancancan/wiki/Role-Based-Authorization
 end
