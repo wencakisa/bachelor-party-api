@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
 
   ROLES = %i[admin guide customer]
 
+  def has_role?(role)
+    roles.include?(role)
+  end
+
   # TODO: Implement user roles and use them with CanCanCan
   # https://github.com/CanCanCommunity/cancancan/wiki/Role-Based-Authorization
 end
