@@ -1,6 +1,6 @@
 class ActivitiesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_activity, only: [:show, :update, :destroys]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_activity, only: %i[show update destroy]
   load_and_authorize_resource
 
   include Response

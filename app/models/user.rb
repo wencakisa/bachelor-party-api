@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
-  ROLES = %i[admin guide customer]
+  ROLES = %i[admin guide customer].freeze
 
   def role?(role_name)
     role == role_name
