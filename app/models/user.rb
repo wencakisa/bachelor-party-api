@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable,
-  		 :registerable,
+         :registerable,
          :recoverable,
          :rememberable,
          :trackable,
@@ -14,6 +14,6 @@ class User < ActiveRecord::Base
   ROLES = %i[admin guide customer].freeze
 
   def role?(role_name)
-    role == role_name
+    role == role_name.to_s
   end
 end
