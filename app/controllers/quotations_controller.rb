@@ -6,8 +6,13 @@ class QuotationsController < ApplicationController
   include Response
 
   def index
-    @activites = Quotation.all
-    json_response @activites
+    @quotations = Quotation.all
+
+    if params[:status]
+      @quotations = @quotations.where(status: params[:status])
+    end
+
+    json_response @quotations
   end
 
   def show
