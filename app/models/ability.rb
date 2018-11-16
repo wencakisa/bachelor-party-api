@@ -6,7 +6,7 @@ class Ability
 
     can :read, Activity
 
-    can [:show, :create], Quotation
+    can %i[show create], Quotation
     # Users can update quotations who are still
     # waiting to be approved by the admin
     can :update, Quotation, pending: true
