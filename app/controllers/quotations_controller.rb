@@ -8,9 +8,7 @@ class QuotationsController < ApplicationController
   def index
     @quotations = Quotation.all
 
-    if params[:status]
-      @quotations = @quotations.where(status: params[:status])
-    end
+    @quotations = @quotations.where(status: params[:status]) if params[:status]
 
     json_response @quotations
   end
