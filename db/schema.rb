@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_15_202722) do
+ActiveRecord::Schema.define(version: 2018_11_18_134449) do
 
   create_table "activities", force: :cascade do |t|
     t.string "title"
@@ -27,6 +27,8 @@ ActiveRecord::Schema.define(version: 2018_11_15_202722) do
   create_table "activities_quotations", id: false, force: :cascade do |t|
     t.integer "activity_id", null: false
     t.integer "quotation_id", null: false
+    t.index ["activity_id"], name: "index_activities_quotations_on_activity_id"
+    t.index ["quotation_id", "activity_id"], name: "index_activities_quotations_on_quotation_id_and_activity_id", unique: true
   end
 
   create_table "quotations", force: :cascade do |t|
