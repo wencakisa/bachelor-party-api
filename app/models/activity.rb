@@ -12,4 +12,11 @@ class Activity < ApplicationRecord
 
   enum by: %i[day night]
 
+  def as_json(options = {})
+    super(
+      include: {
+        prices: { only: %i[id amount options] }
+      }
+    )
+  end
 end
