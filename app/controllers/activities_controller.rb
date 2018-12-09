@@ -7,7 +7,7 @@ class ActivitiesController < ApplicationController
 
   def index
     @activites = Activity.all
-    @activities = @activities.where(by: params[:by]) if params[:by]
+    @activities = @activities.where(time_type: params[:time_type]) if params[:time_type]
 
     json_response @activites
   end
@@ -45,7 +45,7 @@ class ActivitiesController < ApplicationController
       :transfer_included,
       :guide_included,
       :duration,
-      :by,
+      :time_type,
       :prices
     )
   end
