@@ -10,7 +10,8 @@ class Activity < ApplicationRecord
             presence: true,
             numericality: { greater_than_or_equal_to: 0 }
 
-  enum by: %i[day night]
+  validates :time_type, presence: true
+  enum time_type: %i[day night]
 
   def as_json(options = {})
     super(
