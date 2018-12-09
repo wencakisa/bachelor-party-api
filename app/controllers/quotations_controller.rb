@@ -37,7 +37,8 @@ class QuotationsController < ApplicationController
     params.require(:quotation).permit(
       :group_size,
       :user_email,
-      activity_ids: []
+      activity_ids: [],
+      price_ids: []
     )
   end
 end

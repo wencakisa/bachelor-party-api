@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_25_103105) do
+ActiveRecord::Schema.define(version: 2018_12_09_122751) do
 
   create_table "activities", force: :cascade do |t|
     t.string "title"
@@ -22,17 +22,19 @@ ActiveRecord::Schema.define(version: 2018_11_25_103105) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_url"
-    t.integer "by"
+    t.integer "time_type"
   end
 
   create_table "activities_prices", id: false, force: :cascade do |t|
     t.integer "activity_id", null: false
     t.integer "price_id", null: false
+    t.index ["activity_id", "price_id"], name: "index_activities_prices_on_activity_id_and_price_id"
   end
 
   create_table "activities_quotations", id: false, force: :cascade do |t|
     t.integer "activity_id", null: false
     t.integer "quotation_id", null: false
+    t.index ["activity_id", "quotation_id"], name: "index_activities_quotations_on_activity_id_and_quotation_id"
     t.index ["activity_id"], name: "index_activities_quotations_on_activity_id"
     t.index ["quotation_id", "activity_id"], name: "index_activities_quotations_on_quotation_id_and_activity_id", unique: true
   end
@@ -42,6 +44,12 @@ ActiveRecord::Schema.define(version: 2018_11_25_103105) do
     t.string "options"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "prices_quotations", id: false, force: :cascade do |t|
+    t.integer "quotation_id", null: false
+    t.integer "price_id", null: false
+    t.index ["quotation_id", "price_id"], name: "index_prices_quotations_on_quotation_id_and_price_id"
   end
 
   create_table "quotations", force: :cascade do |t|
