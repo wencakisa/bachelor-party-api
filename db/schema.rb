@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_09_122751) do
+ActiveRecord::Schema.define(version: 2018_12_10_094055) do
 
   create_table "activities", force: :cascade do |t|
     t.string "title"
@@ -23,12 +23,6 @@ ActiveRecord::Schema.define(version: 2018_12_09_122751) do
     t.datetime "updated_at", null: false
     t.string "image_url"
     t.integer "time_type"
-  end
-
-  create_table "activities_prices", id: false, force: :cascade do |t|
-    t.integer "activity_id", null: false
-    t.integer "price_id", null: false
-    t.index ["activity_id", "price_id"], name: "index_activities_prices_on_activity_id_and_price_id"
   end
 
   create_table "activities_quotations", id: false, force: :cascade do |t|
@@ -44,6 +38,8 @@ ActiveRecord::Schema.define(version: 2018_12_09_122751) do
     t.string "options"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "activity_id"
+    t.index ["activity_id"], name: "index_prices_on_activity_id"
   end
 
   create_table "prices_quotations", id: false, force: :cascade do |t|

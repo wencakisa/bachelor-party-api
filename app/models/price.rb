@@ -1,5 +1,6 @@
 class Price < ApplicationRecord
-  has_and_belongs_to_many :activities
+  belongs_to :activity, optional: true
+
   has_and_belongs_to_many :quotations
 
   validates :amount,
