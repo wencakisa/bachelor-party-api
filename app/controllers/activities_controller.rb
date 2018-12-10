@@ -47,7 +47,7 @@ class ActivitiesController < ApplicationController
       :guide_included,
       :duration,
       :time_type,
-      prices_attributes: [:id, :amount, :options]
+      prices_attributes: [:id, :amount, :options, :_destroy]
     )
   end
 end

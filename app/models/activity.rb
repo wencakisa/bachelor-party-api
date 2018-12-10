@@ -2,7 +2,7 @@ class Activity < ApplicationRecord
   has_and_belongs_to_many :quotations
 
   has_and_belongs_to_many :prices
-  accepts_nested_attributes_for :prices
+  accepts_nested_attributes_for :prices, allow_destroy: true
 
   validates :title,    presence: true,  length: { in: 1..100 }
   validates :subtitle, presence: true,  length: { in: 5..250 }
