@@ -39,6 +39,7 @@ class ActivitiesController < ApplicationController
 
   def activity_params
     params.require(:activity).permit(
+      :id,
       :title,
       :subtitle,
       :details,
@@ -46,7 +47,7 @@ class ActivitiesController < ApplicationController
       :guide_included,
       :duration,
       :time_type,
-      :prices
+      prices_attributes: [:id, :amount, :options]
     )
   end
 end
