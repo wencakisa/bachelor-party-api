@@ -11,7 +11,7 @@ class Ability
     # waiting to be approved by the admin
     can :update, Quotation, pending: true
 
-    if user.role?(:admin)
+    if user.admin?
       can :manage, :all
     end
 

@@ -12,8 +12,5 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   ROLES = %i[admin guide customer].freeze
-
-  def role?(role_name)
-    role == role_name.to_s
-  end
+  enum role: ROLES
 end
