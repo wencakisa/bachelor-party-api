@@ -27,6 +27,10 @@ class QuotationsController < ApplicationController
     json_response @quotation
   end
 
+  def approveReject
+    @quotation.update(quotation_params)
+  end
+
   private
 
   def set_quotation
@@ -37,8 +41,9 @@ class QuotationsController < ApplicationController
     params.require(:quotation).permit(
       :group_size,
       :user_email,
-      activity_ids: [],
-      price_ids: []
+      :status,
+      activities: [],
+      prices: []
     )
   end
 end
