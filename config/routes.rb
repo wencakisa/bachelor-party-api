@@ -3,7 +3,6 @@ Rails.application.routes.draw do
 
   resources :activities
 
-  resources :quotations, except: [:destroy] do
-    patch 'update_status', on: :member
-  end
+  patch '/quotations/:id', to: 'quotations#update_status'
+  resources :quotations, except: [:destroy]
 end
