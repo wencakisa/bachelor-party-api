@@ -3,6 +3,10 @@ Rails.application.routes.draw do
 
   resources :activities
 
-  patch '/quotations/:id', to: 'quotations#approveReject'
-  resources :quotations, except: [:destroy]
+  resources :quotations, except: [:destroy] do
+    member do
+      patch 'approve', to: 'quotations#approve'
+      patch 'reject', to: 'quotations#reject'
+    end
+  end
 end
