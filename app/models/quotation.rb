@@ -19,7 +19,8 @@ class Quotation < ApplicationRecord
            :activites_have_single_chosen_price,
            :prices_are_valid_for_each_activity
 
-  enum status: %i[pending rejected approved]
+  STATUSES = %i[pending rejected approved].freeze
+  enum status: STATUSES
 
   def as_json(options = {})
     super(
