@@ -1,6 +1,6 @@
 class QuotationsController < ApplicationController
   before_action :authenticate_user!, except: %i[show create]
-  before_action :set_quotation, only: %i[show update approve reject]
+  before_action :set_quotation, only: %i[show update update_status]
   load_and_authorize_resource
 
   include Response
@@ -27,12 +27,9 @@ class QuotationsController < ApplicationController
     json_response @quotation
   end
 
-  def approve
-    update_status @quotation, :approved
-  end
-
-  def reject
-    update_status @quotation, :rejected
+  def update_status
+    @quotation.update(update_status_params)
+    json_response @quotation
   end
 
   private
@@ -50,7 +47,7 @@ class QuotationsController < ApplicationController
     )
   end
 
-  def update_status(quotation, status)
-    quotation.update(status: status)
+  def update_status_params
+    params.permit(:status)
   end
 end

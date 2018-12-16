@@ -4,9 +4,6 @@ Rails.application.routes.draw do
   resources :activities
 
   resources :quotations, except: [:destroy] do
-    member do
-      patch 'approve', to: 'quotations#approve'
-      patch 'reject', to: 'quotations#reject'
-    end
+    patch 'update_status', on: :member
   end
 end

@@ -64,4 +64,3 @@ class Quotation < ApplicationRecord
     end
   end
 end
-
