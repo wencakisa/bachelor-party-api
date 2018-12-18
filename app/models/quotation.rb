@@ -10,12 +10,14 @@ class Quotation < ApplicationRecord
   validates :user_email, presence: true
 
   has_and_belongs_to_many :activities
-  has_and_belongs_to_many :prices
+  validates_presence_of :activities
 
-  validate :one_activity_at_least,
-           :activities_have_available_prices,
-           :activites_have_single_chosen_price,
-           :prices_are_valid_for_each_activity
+  has_and_belongs_to_many :prices
+  validates_presence_of :prices
+
+  validate :activities_have_available_prices?,
+           :activites_have_single_chosen_price?,
+           :prices_are_valid_for_each_activity?
 
   STATUSES = %i[pending rejected approved].freeze
   enum status: STATUSES
@@ -28,12 +30,6 @@ class Quotation < ApplicationRecord
         prices:     { only: %i[id amount options] }
       }
     )
-  end
-
-  def one_activity_at_least?
-    if activities.empty?
-      errors.add(:activities, 'should be at least one')
-    end
   end
 
   def activities_have_available_prices?
