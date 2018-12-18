@@ -10,12 +10,10 @@ class Quotation < ApplicationRecord
   validates :user_email, presence: true
 
   has_and_belongs_to_many :activities
-  validates :activities, presence: true
-
   has_and_belongs_to_many :prices
-  validates :prices, presence: true
 
-  validate :activities_have_available_prices,
+  validate :one_activity_at_least,
+           :activities_have_available_prices,
            :activites_have_single_chosen_price,
            :prices_are_valid_for_each_activity
 
@@ -32,7 +30,13 @@ class Quotation < ApplicationRecord
     )
   end
 
-  def activities_have_available_prices
+  def one_activity_at_least?
+    if activities.empty?
+      errors.add(:activities, 'should be at least one')
+    end
+  end
+
+  def activities_have_available_prices?
     activities.each do |activity|
       if activity.prices.empty?
         errors.add(
@@ -43,13 +47,13 @@ class Quotation < ApplicationRecord
     end
   end
 
-  def activites_have_single_chosen_price
+  def activites_have_single_chosen_price?
     if activities.size != prices.size
       errors.add(:activities, 'should have a single price for each one')
     end
   end
 
-  def prices_are_valid_for_each_activity
+  def prices_are_valid_for_each_activity?
     return unless errors.blank?
 
     activities.each_with_index do |activity, idx|
