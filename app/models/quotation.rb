@@ -19,6 +19,8 @@ class Quotation < ApplicationRecord
            :activites_have_single_chosen_price?,
            :prices_are_valid_for_each_activity?
 
+  after_update :notify_user_for_status_update
+
   STATUSES = %i[pending rejected approved].freeze
   enum status: STATUSES
 
@@ -62,5 +64,11 @@ class Quotation < ApplicationRecord
         )
       end
     end
+  end
+
+  private
+
+  def notify_user_for_status_update
+    QuotationMailer.updated_status_notification(self).deliver
   end
 end
