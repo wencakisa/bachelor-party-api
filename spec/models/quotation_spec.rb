@@ -3,6 +3,18 @@ require 'rails_helper'
 RSpec.describe Quotation, type: :model do
   subject(:quotation) { create(:quotation) }
 
+  describe 'associations' do
+    it 'has and belongs to many activities' do
+      activities = described_class.reflect_on_association(:activities)
+      expect(activities.macro).to eq(:has_and_belongs_to_many)
+    end
+
+    it 'has and belongs to many prices' do
+      prices = described_class.reflect_on_association(:prices)
+      expect(prices.macro).to eq(:has_and_belongs_to_many)
+    end
+  end
+
   describe 'attributes' do
     context 'when missing' do
       it 'is invalid without a group size' do
