@@ -4,12 +4,12 @@ RSpec.describe Activity, type: :model do
   subject(:activity) { create(:activity) }
 
   describe 'associations' do
-    it 'should have and belong to many quotations' do
+    it 'has and belongs to many quotations' do
       quotations = described_class.reflect_on_association(:quotations)
       expect(quotations.macro).to eq(:has_and_belongs_to_many)
     end
 
-    it 'should have many prices' do
+    it 'has many prices' do
       prices = described_class.reflect_on_association(:prices)
       expect(prices.macro).to eq(:has_many)
     end
