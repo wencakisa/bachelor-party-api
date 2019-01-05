@@ -16,7 +16,7 @@ RSpec.describe Activity, type: :model do
   end
 
   describe 'attributes' do
-    context 'when missing attributes' do
+    context 'when missing' do
       it 'is invalid without a title' do
         activity.title = nil
         expect(activity).to_not be_valid
@@ -38,7 +38,7 @@ RSpec.describe Activity, type: :model do
       end
     end
 
-    context 'when attributes are invalid' do
+    context 'when invalid' do
       it 'is invalid when title is too short' do
         activity.title = ''
         expect(activity).to_not be_valid
