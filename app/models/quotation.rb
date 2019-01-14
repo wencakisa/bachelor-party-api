@@ -7,7 +7,7 @@ class Quotation < ApplicationRecord
               only_integer: true
             }
 
-  validates :user_email, presence: true
+  validates_presence_of :user_email
 
   has_and_belongs_to_many :activities
   validates_presence_of :activities
