@@ -28,13 +28,9 @@ ActiveRecord::Schema.define(version: 2018_12_18_220540) do
   create_table "activities_quotations", id: false, force: :cascade do |t|
     t.integer "activity_id", null: false
     t.integer "quotation_id", null: false
+    t.index ["activity_id", "quotation_id"], name: "index_activities_quotations_on_activity_id_and_quotation_id"
     t.index ["activity_id"], name: "index_activities_quotations_on_activity_id"
     t.index ["quotation_id", "activity_id"], name: "index_activities_quotations_on_quotation_id_and_activity_id", unique: true
-  end
-
-  create_table "activity_prices", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "prices", force: :cascade do |t|
