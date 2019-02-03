@@ -1,5 +1,7 @@
 class Party < ApplicationRecord
-  has_one :quotation
+  belongs_to :quotation
+  validates_presence_of :quotation
+
   has_many :activities, through: :quotation
 
   invitable named_by: :title
