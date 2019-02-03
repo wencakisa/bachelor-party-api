@@ -15,4 +15,7 @@ class User < ActiveRecord::Base
 
   ROLES = %i[admin guide customer].freeze
   enum role: ROLES
+
+  has_many :user_parties
+  has_many :parties, through: :user_parties
 end
