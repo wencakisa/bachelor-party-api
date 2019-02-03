@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 class User < ActiveRecord::Base
-  include Invitation::User
-  include DeviseTokenAuth::Concerns::User
-
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable,
@@ -12,6 +9,9 @@ class User < ActiveRecord::Base
          :rememberable,
          :trackable,
          :validatable
+
+  include DeviseTokenAuth::Concerns::User
+  include Invitation::User
 
   ROLES = %i[admin guide customer].freeze
   enum role: ROLES
