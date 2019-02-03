@@ -38,9 +38,6 @@ gem 'devise_token_auth'
 # CanCanCan gem used for authorization
 gem 'cancancan', '~> 2.0'
 
-# mailgun_rails is an Action Mailer adapter for using Mailgun in Rails apps
-gem 'mailgun_rails'
-
 # Invitations
 gem 'invitation'
 
