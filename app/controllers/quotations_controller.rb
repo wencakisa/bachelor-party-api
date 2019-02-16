@@ -1,14 +1,14 @@
 class QuotationsController < ApplicationController
   before_action :authenticate_user!, except: %i[show create]
-  before_action :set_quotation, only: %i[show update]
+  before_action :set_quotation, only: %i[show update approve]
   load_and_authorize_resource
-
-  include Response
 
   def index
     @quotations = Quotation.all
 
-    @quotations = @quotations.where(status: params[:status]) if params[:status]
+    if params[:status]
+      @quotations = Quotation.by_status(params[:status])
+    end
 
     json_response @quotations
   end
@@ -25,6 +25,12 @@ class QuotationsController < ApplicationController
   def update
     @quotation.update(quotation_params)
     json_response @quotation
+  end
+
+  def approve
+    @quotation.approve
+
+    render :ok
   end
 
   private

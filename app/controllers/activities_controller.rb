@@ -3,12 +3,11 @@ class ActivitiesController < ApplicationController
   before_action :set_activity, only: %i[show update destroy]
   load_and_authorize_resource
 
-  include Response
-
   def index
     @activites = Activity.all
+
     if params[:time_type]
-      @activities = @activities.where(time_type: params[:time_type])
+      @activities = Activity.by_time_type(params[:time_type])
     end
 
     json_response @activites
