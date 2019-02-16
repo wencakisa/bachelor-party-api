@@ -18,6 +18,8 @@ class Activity < ApplicationRecord
   validates :time_type, presence: true
   enum time_type: %i[day night]
 
+  scope :by_time_type, -> time_type { where(time_type: time_type) }
+
   def as_json(options = {})
     super(
       include: {
