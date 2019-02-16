@@ -1,5 +1,5 @@
 class QuotationMailer < ApplicationMailer
-  default from: 'team@bachelorpartysofia.bg'
+  default from: Rails.application.credentials.gmail[:username]
 
   def updated_status_notification(quotation)
     @quotation = quotation
