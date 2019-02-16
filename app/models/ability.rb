@@ -15,6 +15,11 @@ class Ability
       can :manage, :all
     end
 
+    if user.customer?
+      can :read, Quotation, accepted: true
+      can :manage, Party
+    end
+
     # The first argument to `can` is the action you are giving the user
     # permission to do.
     # If you pass :manage it will apply to every action. Other common actions
