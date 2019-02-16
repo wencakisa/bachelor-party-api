@@ -16,7 +16,7 @@ class Ability
     end
 
     if user.customer?
-      can :read, Quotation, accepted: true
+      can :read, Quotation, approved: true
       can :manage, Party
     end
 
