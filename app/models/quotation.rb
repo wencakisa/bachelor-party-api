@@ -24,6 +24,8 @@ class Quotation < ApplicationRecord
   STATUSES = %i[pending rejected approved].freeze
   enum status: STATUSES
 
+  scope :by_status, -> status { where(status: status) }
+
   def as_json(options = {})
     super(
       only: %i[id group_size status user_email],
@@ -64,6 +66,11 @@ class Quotation < ApplicationRecord
         )
       end
     end
+  end
+
+  def approve
+    self.status = :approved
+    Party.create!(quotation: self, title: "Party of #{user_email}")
   end
 
   private
