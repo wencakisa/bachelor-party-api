@@ -76,6 +76,6 @@ class Quotation < ApplicationRecord
   private
 
   def notify_user_for_status_update
-    QuotationMailer.updated_status_notification(self).deliver
+    QuotationMailer.updated_status_notification(self).deliver_later
   end
 end
