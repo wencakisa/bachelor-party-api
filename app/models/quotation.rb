@@ -19,7 +19,7 @@ class Quotation < ApplicationRecord
            :activites_have_single_chosen_price?,
            :prices_are_valid_for_each_activity?
 
-  after_update :notify_user_for_status_update
+  after_update :notify_user_for_status_update, :create_party
 
   STATUSES = %i[pending rejected approved].freeze
   enum status: STATUSES
@@ -68,12 +68,13 @@ class Quotation < ApplicationRecord
     end
   end
 
-  def approve
-    self.status = :approved
-    Party.create!(quotation: self, title: "Party of #{user_email}")
-  end
-
   private
+
+  def create_party
+    if self.status == 'approved'
+      Party.create!(quotation: self, title: "Party of #{user_email}")
+    end
+  end
 
   def notify_user_for_status_update
     QuotationMailer.updated_status_notification(self).deliver_later
