@@ -27,12 +27,6 @@ class QuotationsController < ApplicationController
     json_response @quotation
   end
 
-  def approve
-    @quotation.approve
-
-    render :ok
-  end
-
   private
 
   def set_quotation

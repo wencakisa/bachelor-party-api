@@ -7,9 +7,7 @@ Rails.application.routes.draw do
 
   resources :activities
 
-  resources :quotations, except: [:destroy] do
-    put 'approve', on: :member
-  end
+  resources :quotations, except: [:destroy]
 
   resources :parties
 end
