@@ -1,6 +1,6 @@
 class QuotationsController < ApplicationController
   before_action :authenticate_user!, except: %i[show create]
-  before_action :set_quotation, only: %i[show update approve]
+  before_action :set_quotation, only: %i[show update]
   load_and_authorize_resource
 
   def index
