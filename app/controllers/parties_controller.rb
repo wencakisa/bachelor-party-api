@@ -4,7 +4,11 @@ class PartiesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @parties = Party.for_user(current_user)
+    @parties = Party.all
+
+    if not current_user.admin?
+      @parties = @parties.for_user current_user
+    end
 
     json_response @parties
   end
