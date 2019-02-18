@@ -4,17 +4,24 @@ class UsersController < ApplicationController
     load_and_authorize_resource
     
     def index
-        @users = User.by_role('admin') + User.by_role('guide')
+        @users = User.all
+
+        if params[:role]
+          @users = User.by_role(params[:role])
+        end
+
         json_response @users
     end
 
     def create
         @user = User.create!(user_params)
+
         json_response @user
     end
 
     def destroy
         @user.destroy
+        
         head :no_content
     end
 
