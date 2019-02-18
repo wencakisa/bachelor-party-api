@@ -10,4 +10,6 @@ Rails.application.routes.draw do
   resources :quotations, except: [:destroy]
 
   resources :parties
+
+  resources :users, except: [:update]
 end
