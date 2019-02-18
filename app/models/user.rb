@@ -18,4 +18,6 @@ class User < ActiveRecord::Base
 
   has_many :user_parties
   has_many :parties, through: :user_parties
+
+  scope :by_role, -> role { where(role: role) }
 end
