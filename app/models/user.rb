@@ -17,7 +17,17 @@ class User < ActiveRecord::Base
   enum role: ROLES
 
   has_many :user_parties
-  has_many :parties, through: :user_parties
+  has_many :parties, through: :user_parties do
+    def <<(value)
+      user = proxy_association.owner
+
+      if user.guide?
+        value.guide = user
+      end
+
+      super value
+    end
+  end
 
   scope :by_role, -> role { where(role: role) }
 end

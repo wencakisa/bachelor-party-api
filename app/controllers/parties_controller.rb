@@ -6,8 +6,10 @@ class PartiesController < ApplicationController
   def index
     @parties = Party.all
 
-    if not current_user.admin?
-      @parties = @parties.for_user current_user
+    if current_user.customer?
+      @parties = @parties.for_customer_user current_user
+    elsif current_user.guide?
+      @parties = @parties.for_guide_user current_user
     end
 
     json_response @parties

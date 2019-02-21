@@ -2,6 +2,8 @@ class Party < ApplicationRecord
   belongs_to :quotation
   validates_presence_of :quotation
 
+  belongs_to :guide, class_name: 'User', foreign_key: :user_id, optional: true
+
   has_many :activities, through: :quotation
 
   has_many :user_parties, dependent: :delete_all
@@ -11,14 +13,22 @@ class Party < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 50 }, uniqueness: true
 
-  scope :for_user, -> user { joins(:user_parties).where(user_parties: { user: user }) }
+  scope :for_customer_user, -> user {
+    joins(:user_parties).where(user_parties: { customer: user })
+  }
+
+  scope :for_guide_user, -> user { where(guide: user) }
+
+  def customers
+    users.where(role: :customer)
+  end
 
   def as_json(options = {})
     super(
-      only: %i[id title datetime],
+      only: %i[id title datetime guide],
       include: {
         activities: { only: %i[id title] },
-        invites: { only: %i[invitable_id email] }
+        invites:    { only: %i[invitable_id email] }
       }
     )
   end
