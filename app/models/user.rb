@@ -16,18 +16,26 @@ class User < ActiveRecord::Base
   ROLES = %i[admin guide customer].freeze
   enum role: ROLES
 
+  has_many :host_parties,
+           class_name: 'Party',
+           foreign_key: :host_id,
+           inverse_of: :host
+
+  has_many :guide_parties,
+           class_name: 'Party',
+           foreign_key: :guide_id,
+           inverse_of: :guide
+
   has_many :user_parties
-  has_many :parties, through: :user_parties do
-    def <<(value)
-      user = proxy_association.owner
-
-      if user.guide?
-        value.guide = user
-      end
-
-      super value
-    end
-  end
+  has_many :parties, through: :user_parties
 
   scope :by_role, -> role { where(role: role) }
+
+  def parties
+    if guide?
+      guide_parties
+    elsif customer?
+      host_parties + super
+    end
+  end
 end

@@ -4,12 +4,10 @@ class PartiesController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @parties = Party.all
-
-    if current_user.customer?
-      @parties = @parties.for_customer_user current_user
-    elsif current_user.guide?
-      @parties = @parties.for_guide_user current_user
+    if not current_user.admin?
+      @parties = current_user.parties
+    else
+      @partie = Party.all
     end
 
     json_response @parties

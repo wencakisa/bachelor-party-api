@@ -1,8 +1,17 @@
 class Party < ApplicationRecord
-  belongs_to :quotation
+  belongs_to :quotation, -> { where(status: :approved) }
   validates_presence_of :quotation
 
-  belongs_to :guide, class_name: 'User', foreign_key: :user_id, optional: true
+  belongs_to :host,
+             class_name: 'User',
+             foreign_key: :host_id,
+             inverse_of: :host_parties
+
+  belongs_to :guide,
+             class_name: 'User',
+             foreign_key: :guide_id,
+             optional: true,
+             inverse_of: :guide_parties
 
   has_many :activities, through: :quotation
 
@@ -13,14 +22,8 @@ class Party < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 50 }, uniqueness: true
 
-  scope :for_customer_user, -> user {
-    joins(:user_parties).where(user_parties: { customer: user })
-  }
-
-  scope :for_guide_user, -> user { where(guide: user) }
-
   def customers
-    users.where(role: :customer)
+    users
   end
 
   def as_json(options = {})
