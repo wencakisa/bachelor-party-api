@@ -28,10 +28,11 @@ class Party < ApplicationRecord
 
   def as_json(options = {})
     super(
-      only: %i[id title datetime guide],
+      only: %i[id title datetime host guide],
       include: {
         activities: { only: %i[id title] },
-        invites:    { only: %i[invitable_id email] }
+        invites:    { only: %i[invitable_id email] },
+        users:      { only: %i[id email] }
       }
     )
   end
