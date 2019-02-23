@@ -7,7 +7,7 @@ class PartiesController < ApplicationController
     if not current_user.admin?
       @parties = current_user.parties
     else
-      @partie = Party.all
+      @parties = Party.all
     end
 
     json_response @parties
