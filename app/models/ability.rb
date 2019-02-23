@@ -17,7 +17,9 @@ class Ability
 
     if user.customer?
       can :read, Quotation, approved: true
-      can :manage, Party
+
+      can :read, Party
+      can :manage, Party, host_id: user.id
     end
 
     # The first argument to `can` is the action you are giving the user
