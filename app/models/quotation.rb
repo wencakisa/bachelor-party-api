@@ -95,7 +95,7 @@ class Quotation < ApplicationRecord
 
   def notify_user_for_status_update
     if self.approved? || self.rejected?
-      QuotationMailer.updated_status_notification(self).deliver_later
+      QuotationMailer.notify_customer_for_status_update(self).deliver_later
     end
   end
 end
