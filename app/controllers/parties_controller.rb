@@ -34,6 +34,6 @@ class PartiesController < ApplicationController
   end
 
   def party_params
-    params.require(:party).permit(:title, :datetime, :guide_id)
+    params.require(:party).permit(:title, :guide_id)
   end
 end
