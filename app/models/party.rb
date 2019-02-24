@@ -5,6 +5,7 @@ class Party < ApplicationRecord
   belongs_to :host,
              class_name: 'User',
              foreign_key: :host_id,
+             optional: true,
              inverse_of: :host_parties
 
   belongs_to :guide,
