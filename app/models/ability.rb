@@ -22,6 +22,10 @@ class Ability
       can :manage, Party, host_id: user.id
     end
 
+    if user.guide?
+      can :read, Party
+    end
+
     # The first argument to `can` is the action you are giving the user
     # permission to do.
     # If you pass :manage it will apply to every action. Other common actions
