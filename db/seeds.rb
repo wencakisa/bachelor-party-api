@@ -20,6 +20,13 @@ users_credentials = [
     password: 'customer123',
     password_confirmation: 'customer123',
     role: :customer
+  },
+  {
+    email: 'customer2@bps.bg',
+    name: 'Customer2',
+    password: 'customer123',
+    password_confirmation: 'customer123',
+    role: :customer
   }
 ]
 
@@ -92,7 +99,7 @@ quotations_data = [
   {
     group_size: 12,
     date: Date.parse('20-06-2019'),
-    user_email: User.last.email,
+    user_email: User.third.email,
     activities: Activity.all,
     prices: Activity.all.map(&:prices).map(&:first)
   },
