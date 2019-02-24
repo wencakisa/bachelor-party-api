@@ -74,9 +74,22 @@ class Quotation < ApplicationRecord
 
   private
 
+  def user_already_registered?
+    User.exists?(email: self.user_email)
+  end
+
   def create_party
     if self.approved? && self.party.nil?
-      Party.create!(quotation: self, title: "Party of #{user_email}")
+      party_attributes = {
+        quotation: self,
+        title: "Party of #{user_email}"
+      }
+
+      if user_already_registered?
+        party_attributes[:host] = User.find_by(email: self.user_email)
+      end
+
+      Party.create!(**party_attributes)
     end
   end
 
