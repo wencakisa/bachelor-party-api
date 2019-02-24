@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 2019_02_21_132129) do
   create_table "parties", force: :cascade do |t|
     t.string "title"
     t.integer "quotation_id"
-    t.datetime "datetime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "guide_id"
@@ -81,6 +80,7 @@ ActiveRecord::Schema.define(version: 2019_02_21_132129) do
     t.integer "status", default: 0
     t.integer "group_size"
     t.string "user_email"
+    t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "custom_email_message"

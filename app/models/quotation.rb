@@ -9,6 +9,8 @@ class Quotation < ApplicationRecord
 
   validates_presence_of :user_email
 
+  validates_date :date, on_or_after: lambda { Date.current }
+
   has_and_belongs_to_many :activities
   validates_presence_of :activities
 
@@ -30,7 +32,7 @@ class Quotation < ApplicationRecord
 
   def as_json(options = {})
     super(
-      only: %i[id group_size status user_email],
+      only: %i[id group_size status user_email date],
       include: {
         activities: { only: %i[id title] },
         prices:     { only: %i[id amount options] }
