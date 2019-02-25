@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_21_132129) do
+ActiveRecord::Schema.define(version: 2019_02_25_211817) do
 
   create_table "activities", force: :cascade do |t|
     t.string "title"
@@ -31,6 +31,19 @@ ActiveRecord::Schema.define(version: 2019_02_21_132129) do
     t.index ["activity_id", "quotation_id"], name: "index_activities_quotations_on_activity_id_and_quotation_id"
     t.index ["activity_id"], name: "index_activities_quotations_on_activity_id"
     t.index ["quotation_id", "activity_id"], name: "index_activities_quotations_on_quotation_id_and_activity_id", unique: true
+  end
+
+  create_table "invites", force: :cascade do |t|
+    t.string "invitable_type"
+    t.integer "invitable_id"
+    t.string "token"
+    t.string "email"
+    t.integer "status", default: 0
+    t.integer "sender_id"
+    t.integer "recipient_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invitable_type", "invitable_id"], name: "index_invites_on_invitable_type_and_invitable_id"
   end
 
   create_table "parties", force: :cascade do |t|

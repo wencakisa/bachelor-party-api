@@ -1,6 +1,5 @@
 class Party < ApplicationRecord
   belongs_to :quotation, -> { where(status: :approved) }
-  validates_presence_of :quotation
 
   belongs_to :host,
              class_name: 'User',
@@ -19,11 +18,16 @@ class Party < ApplicationRecord
   has_many :user_parties, dependent: :delete_all
   has_many :users, through: :user_parties
 
-  invitable named_by: :title
+  has_many :invites, as: :invitable
 
+
+  validates_presence_of :quotation
   validates :title, presence: true, length: { maximum: 50 }, uniqueness: true
 
-  after_commit :notify_guide_for_party_assignment, :notify_guide_for_party_withdrawal, on: :update
+
+  after_commit :notify_guide_for_party_assignment,
+               :notify_guide_for_party_withdrawal,
+               on: :update
 
   def customers
     users
