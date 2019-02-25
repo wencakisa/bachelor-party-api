@@ -38,9 +38,6 @@ gem 'devise_token_auth'
 # CanCanCan gem used for authorization
 gem 'cancancan', '~> 2.0'
 
-# Invitations
-gem 'invitation'
-
 # Datetime validations
 gem 'validates_timeliness', '~> 5.0.0.alpha3'
 

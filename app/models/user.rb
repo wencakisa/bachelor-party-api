@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
          :validatable
 
   include DeviseTokenAuth::Concerns::User
-  include Invitation::User
 
   ROLES = %i[admin guide customer].freeze
   enum role: ROLES

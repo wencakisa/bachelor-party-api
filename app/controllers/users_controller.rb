@@ -1,42 +1,42 @@
 class UsersController < ApplicationController
-    before_action :authenticate_user!
-    before_action :set_user, only: %i[destroy]
-    load_and_authorize_resource
-    
-    def index
-        @users = User.all
+  before_action :authenticate_user!
+  before_action :set_user, only: %i[destroy]
+  load_and_authorize_resource
 
-        if params[:role]
-          @users = User.by_role(params[:role])
-        end
+  def index
+    @users = User.all
 
-        json_response @users
+    if params[:role]
+      @users = User.by_role(params[:role])
     end
 
-    def create
-        @user = User.create!(user_params)
+    json_response @users
+  end
 
-        json_response @user
-    end
+  def create
+    @user = User.create!(user_params)
 
-    def destroy
-        @user.destroy
-        
-        head :no_content
-    end
+    json_response @user
+  end
 
-    private
+  def destroy
+    @user.destroy
 
-    def set_user
-        @user = User.find params[:id]
-    end
+    head :no_content
+  end
 
-    def user_params
-        params.require(:user).permit(
-            :id,
-            :email,
-            :password,
-            :role
-        )
-    end
+  private
+
+  def set_user
+    @user = User.find params[:id]
+  end
+
+  def user_params
+    params.require(:user).permit(
+      :id,
+      :email,
+      :password,
+      :role
+    )
+  end
 end
