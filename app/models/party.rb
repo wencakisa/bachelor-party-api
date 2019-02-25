@@ -23,7 +23,7 @@ class Party < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: 50 }, uniqueness: true
 
-  after_commit :notify_guide_for_party_assignment, :notify_guide_for_party_unassignment, on: :update
+  after_commit :notify_guide_for_party_assignment, :notify_guide_for_party_withdrawal, on: :update
 
   def customers
     users
@@ -57,9 +57,9 @@ class Party < ApplicationRecord
     end
   end
 
-  def notify_guide_for_party_unassignment
+  def notify_guide_for_party_withdrawal
     if self.guide.nil?
-      PartyMailer.notify_guide_for_party_unassignment(self, @@guide_email).deliver_later
+      PartyMailer.notify_guide_for_party_withdrawal(self, @@guide_email).deliver_later
     end
   end
 end
