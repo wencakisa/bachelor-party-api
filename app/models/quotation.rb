@@ -1,4 +1,13 @@
 class Quotation < ApplicationRecord
+  has_one :invite,
+           as: :invitable,
+           required: false,
+           dependent: :destroy
+  has_one :party, dependent: :destroy
+
+  has_and_belongs_to_many :activities
+  has_and_belongs_to_many :prices
+
   validates :group_size,
             presence: true,
             numericality: {
@@ -7,32 +16,30 @@ class Quotation < ApplicationRecord
               only_integer: true
             }
 
-  validates_presence_of :user_email
-
   validates_date :date, on_or_after: lambda { Date.current }
 
-  has_and_belongs_to_many :activities
+  validates_presence_of :user_email
   validates_presence_of :activities
-
-  has_and_belongs_to_many :prices
   validates_presence_of :prices
 
   validate :activities_have_available_prices?,
            :activites_have_single_chosen_price?,
            :prices_are_valid_for_each_activity?
 
-  has_one :party, dependent: :destroy
-
-  after_commit :notify_user_for_status_update, :create_party, on: :update
+  after_commit :invite_user_from_email, :create_party, on: :update
 
   STATUSES = %i[pending rejected approved].freeze
   enum status: STATUSES
 
   scope :by_status, -> status { where(status: status) }
 
+  def process_user(user)
+    self.party.update_attributes(host: user)
+  end
+
   def as_json(options = {})
     super(
-      only: %i[id group_size status user_email date],
+      only: %i[id group_size user_email status date],
       include: {
         activities: { only: %i[id title] },
         prices:     { only: %i[id amount options] }
@@ -74,28 +81,37 @@ class Quotation < ApplicationRecord
 
   private
 
-  def user_already_registered?
+  def user_already_exists?
     User.exists?(email: self.user_email)
+  end
+
+  def invite_user_from_email
+    if self.approved? && self.invite.nil?
+      sender = User.by_role(:admin).first
+
+      invite = Invite.new(email: self.user_email, sender_id: sender.id, invitable: self)
+
+      if user_already_exists?
+        invite.recipient_id = User.find_by(email: self.user_email).id
+      end
+
+      invite.save!
+    end
   end
 
   def create_party
     if self.approved? && self.party.nil?
       party_attributes = {
         quotation: self,
-        title: "Party of #{user_email}"
+        title: "Party of #{self.user_email}"
       }
 
-      if user_already_registered?
+      # User already exists, so we can set him as a party host
+      if user_already_exists?
         party_attributes[:host] = User.find_by(email: self.user_email)
       end
 
       Party.create!(**party_attributes)
-    end
-  end
-
-  def notify_user_for_status_update
-    if self.approved? || self.rejected?
-      QuotationMailer.notify_customer_for_status_update(self).deliver_later
     end
   end
 end
