@@ -80,7 +80,6 @@ ActiveRecord::Schema.define(version: 2019_02_25_211817) do
     t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "custom_email_message"
   end
 
   create_table "user_parties", force: :cascade do |t|
