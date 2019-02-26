@@ -20,10 +20,8 @@ class Party < ApplicationRecord
 
   has_many :invites, -> { where(status: :sent) }, as: :invitable
 
-
   validates_presence_of :quotation
   validates :title, presence: true, length: { maximum: 50 }, uniqueness: true
-
 
   after_commit :notify_guide_for_party_assignment,
                :notify_guide_for_party_withdrawal,
@@ -35,6 +33,10 @@ class Party < ApplicationRecord
 
   def date
     quotation.date
+  end
+
+  def process_user(user)
+    users << user
   end
 
   def as_json(options = {})

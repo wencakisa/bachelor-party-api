@@ -54,7 +54,6 @@ class User < ActiveRecord::Base
 
     claim_params.delete(:token)
 
-
     user_password_from_params = {
       password: claim_params[:password],
       password_confirmation: claim_params[:password_confirmation]
@@ -62,11 +61,12 @@ class User < ActiveRecord::Base
 
     user = create!(email: invite.email, **user_password_from_params)
 
-    invitable = invite.invitable
-    invitable.users.push user
     invite.recipient = user
     invite.status = :accepted
     invite.save
+
+    invitable = invite.invitable
+    invitable.process_user user
 
     user
   end
