@@ -1,8 +1,19 @@
-<p>Hi,</p>
+<p>Hello,</p>
 
-<p>You have been invited to join a <%= @invite.invitable_type %>.</p>
+<% if @party %>
+  <p>You have been invited to join the <%= @party.title %> by the host himself!</p>
+  <p>Do not hesitate and join us here:</p>
+<% elsif @quotation %>
+  <p>Your quotation for <%= @quotation.date %> has been <%= @quotation.status %> by our admins.</p>
 
-<p>Too see further information, please register at this url:</p>
+  <% if @quotation.custom_email_message %>
+    <p>They have left you the following message afterwards:</p>
+    <p>"<%= @quotation.custom_email_message %>"</p>
+  <% end %>
+
+  <p>Join us and proceed with your party organization from this link:</p>
+<% end %>
+
 <p><%= @url %></p>
 
 <p>Best wishes,</p>

@@ -1,8 +1,19 @@
-Hi,
+Hello,
 
-You have been invited to join a <%= @invite.invitable_type %>.
+<% if @party %>
+  You have been invited to join the <%= @party.title %> by the host himself!
+  Do not hesitate and join us here:
+<% elsif @quotation %>
+  Your quotation for <%= @quotation.date %> has been <%= @quotation.status %> by our admins.
 
-Too see further information, please register at this url:
+  <% if @quotation.custom_email_message %>
+    They have left you the following message afterwards:
+    "<%= @quotation.custom_email_message %>"
+  <% end %>
+
+  Join us and proceed with your party organization from this link:
+<% end %>
+
 <%= @url %>
 
 Best wishes,
