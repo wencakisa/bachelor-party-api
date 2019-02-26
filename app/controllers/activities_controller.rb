@@ -18,13 +18,22 @@ class ActivitiesController < ApplicationController
   end
 
   def create
-    @activity = Activity.create!(activity_params)
-    json_response @activity
+    @activity = Activity.new(activity_params)
+
+    if @activity.save
+      json_response @activity, :created
+    else
+      error_response @activity
+    end
+
   end
 
   def update
-    @activity.update(activity_params)
-    json_response @activity
+    if @activity.update(activity_params)
+      json_response @activity
+    else
+      error_response @activity
+    end
   end
 
   def destroy
