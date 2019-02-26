@@ -3,7 +3,7 @@ class InviteMailer < ApplicationMailer
     @invite = invite
 
     client_api_url = Rails.application.credentials.client[:register_url]
-    @url = "#{client_api_url}?invitation_token=#{@invite.token}"
+    @url = "#{client_api_url}?invitation_token=#{@invite.token}&resource_type=#{@invite.invitable_type}"
 
     if @invite.invitable_type == 'Party'
       @party = @invite.invitable
