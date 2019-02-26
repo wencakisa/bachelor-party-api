@@ -38,7 +38,6 @@ class QuotationsController < ApplicationController
       :group_size,
       :user_email,
       :status,
-      :custom_email_message,
       :date,
       activity_ids: [],
       price_ids: []
