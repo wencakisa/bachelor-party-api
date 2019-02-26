@@ -18,7 +18,7 @@ class Party < ApplicationRecord
   has_many :user_parties, dependent: :delete_all
   has_many :users, through: :user_parties
 
-  has_many :invites, as: :invitable
+  has_many :invites, -> { where(status: :sent) }, as: :invitable
 
 
   validates_presence_of :quotation

@@ -25,11 +25,18 @@ class User < ActiveRecord::Base
            foreign_key: :guide_id,
            inverse_of: :guide
 
-  has_many :user_parties
+  has_many :user_parties, dependent: :destroy
   has_many :parties, through: :user_parties
 
-  has_many :invitations, class_name: 'Invite', foreign_key: :recipient_id
-  has_many :sent_invites, class_name: 'Invite', foreign_key: :sender_id
+  has_many :invitations,
+           class_name: 'Invite',
+           foreign_key: :recipient_id,
+           dependent: :destroy
+
+  has_many :sent_invites,
+           class_name: 'Invite',
+           foreign_key: :sender_id,
+           dependent: :destroy
 
   scope :by_role, -> role { where(role: role) }
 
@@ -47,7 +54,6 @@ class User < ActiveRecord::Base
 
     claim_params.delete(:token)
 
-    invitable = invite.invitable
 
     user_password_from_params = {
       password: claim_params[:password],
@@ -55,9 +61,10 @@ class User < ActiveRecord::Base
     }
 
     user = create!(email: invite.email, **user_password_from_params)
+
+    invitable = invite.invitable
     invitable.users.push user
     invite.recipient = user
-
     invite.status = :accepted
     invite.save
 

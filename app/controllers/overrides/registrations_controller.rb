@@ -7,9 +7,10 @@ module Overrides
         @user = User.claim_invitation(accept_invitation_params)
 
         if @user.errors.empty?
-          render json: { success: ['Invitation accepted. Enjoy your party!'] }, status: :ok
+          render json: { success: ['Invitation accepted. Enjoy your party!'], status: 'success' },
+                 status: :ok
         else
-          render json: { errors: @user.errors.full_messages },
+          render json: { errors: @user.errors.full_messages, status: 'failed' },
                  status: :unprocessable_entity
         end
       else
@@ -24,10 +25,12 @@ module Overrides
     end
 
     def resource_from_invitation_token
-      @invite = Invite.find_by_token params[:invitation_token]
-      return if params[:invitation_token] && @invite
+      if params[:invitation_token]
+        @invite = Invite.find_by_token params[:invitation_token]
+        return if @invite
 
-      render json: { errors: ['Invalid token provided!'] }, status: :not_acceptable
+        render json: { errors: ['Invalid token provided!'] }, status: :not_acceptable
+      end
     end
   end
 end
