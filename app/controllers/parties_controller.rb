@@ -18,8 +18,11 @@ class PartiesController < ApplicationController
   end
 
   def update
-    @party.update(party_params)
-    json_response @party
+    if @party.update(party_params)
+      json_response @party
+    else
+      error_response @party
+    end
   end
 
   def destroy

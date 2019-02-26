@@ -18,13 +18,21 @@ class QuotationsController < ApplicationController
   end
 
   def create
-    @quotation = Quotation.create!(quotation_params)
-    json_response @quotation
+    @quotation = Quotation.new(quotation_params)
+
+    if @quotation.save
+      json_response @quotation, :created
+    else
+      error_response @quotation
+    end
   end
 
   def update
-    @quotation.update(quotation_params)
-    json_response @quotation
+    if @quotation.update(quotation_params)
+      json_response @quotation
+    else
+      error_response @quotation
+    end
   end
 
   private
