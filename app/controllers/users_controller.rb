@@ -14,9 +14,13 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create!(user_params)
+    @user = User.new(user_params)
 
-    json_response @user
+    if @user.save
+      json_response @user, :created
+    else
+      error_response @user
+    end
   end
 
   def destroy
