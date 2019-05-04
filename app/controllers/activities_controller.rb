@@ -5,10 +5,7 @@ class ActivitiesController < ApplicationController
 
   def index
     @activites = Activity.all
-
-    if params[:time_type]
-      @activities = Activity.by_time_type(params[:time_type])
-    end
+    @activities = Activity.by_time_type(time_type) if time_type
 
     json_response @activites
   end
@@ -25,7 +22,6 @@ class ActivitiesController < ApplicationController
     else
       error_response @activity
     end
-
   end
 
   def update
@@ -42,6 +38,10 @@ class ActivitiesController < ApplicationController
   end
 
   private
+
+  def time_type
+    params[:time_type]
+  end
 
   def set_activity
     @activity = Activity.find params[:id]

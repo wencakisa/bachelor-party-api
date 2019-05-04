@@ -5,10 +5,7 @@ class QuotationsController < ApplicationController
 
   def index
     @quotations = Quotation.all
-
-    if params[:status]
-      @quotations = Quotation.by_status(params[:status])
-    end
+    @quotations = Quotation.by_status(status) if status
 
     json_response @quotations
   end
@@ -36,6 +33,10 @@ class QuotationsController < ApplicationController
   end
 
   private
+
+  def status
+    params[:status]
+  end
 
   def set_quotation
     @quotation = Quotation.find params[:id]

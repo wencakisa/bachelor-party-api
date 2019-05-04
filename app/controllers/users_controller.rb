@@ -5,10 +5,7 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
-
-    if params[:role]
-      @users = User.by_role(params[:role])
-    end
+    @users = User.by_role(role) if role
 
     json_response @users
   end
@@ -25,11 +22,14 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-
     head :no_content
   end
 
   private
+
+  def role
+    params[:role]
+  end
 
   def set_user
     @user = User.find params[:id]

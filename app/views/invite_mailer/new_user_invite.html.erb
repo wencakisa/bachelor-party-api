@@ -6,7 +6,7 @@
 <% elsif @quotation %>
   <p>Your quotation for <%= @quotation.date %> has been <%= @quotation.status %> by our admins.</p>
 
-  <% if @quotation.custom_email_message %>
+  <% unless @quotation.custom_email_message.empty? %>
     <p>They have left you the following message afterwards:</p>
     <p>"<%= @quotation.custom_email_message %>"</p>
   <% end %>

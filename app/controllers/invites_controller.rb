@@ -9,7 +9,7 @@ class InvitesController < ApplicationController
       render json: { success: ['Invite sent!'] }, status: :created
     else
       render json: { errors: ['Invite could not be sent.'] },
-            status: :unprocessable_entity
+             status: :unprocessable_entity
     end
   end
 
