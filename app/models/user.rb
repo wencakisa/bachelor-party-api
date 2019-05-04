@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
            foreign_key: :sender_id,
            dependent: :destroy
 
-  scope :by_role, -> role { where(role: role) }
+  scope :by_role, ->(role) { where(role: role) }
 
   def parties
     if guide?

@@ -1,8 +1,8 @@
 class Quotation < ApplicationRecord
   has_one :invite,
-           as: :invitable,
-           required: false,
-           dependent: :destroy
+          as: :invitable,
+          required: false,
+          dependent: :destroy
   has_one :party, dependent: :destroy
 
   has_and_belongs_to_many :activities
@@ -16,7 +16,7 @@ class Quotation < ApplicationRecord
               only_integer: true
             }
 
-  validates_date :date, on_or_after: lambda { Date.current }
+  validates_date :date, on_or_after: -> { Date.current }
 
   validates_presence_of :user_email
   validates_presence_of :activities
@@ -31,20 +31,10 @@ class Quotation < ApplicationRecord
   STATUSES = %i[pending rejected approved].freeze
   enum status: STATUSES
 
-  scope :by_status, -> status { where(status: status) }
+  scope :by_status, ->(status) { where(status: status) }
 
   def process_user(user)
-    self.party.update_attributes(host: user)
-  end
-
-  def as_json(options = {})
-    super(
-      only: %i[id group_size user_email status date],
-      include: {
-        activities: { only: %i[id title] },
-        prices:     { only: %i[id amount options] }
-      }
-    )
+    party.update_attributes(host: user)
   end
 
   def activities_have_available_prices?
@@ -82,17 +72,19 @@ class Quotation < ApplicationRecord
   private
 
   def user_already_exists?
-    User.exists?(email: self.user_email)
+    User.exists?(email: user_email)
   end
 
   def invite_user_from_email
-    if self.approved? && self.invite.nil?
+    if approved? && invite.nil?
       sender = User.by_role(:admin).first
 
-      invite = Invite.new(email: self.user_email, sender_id: sender.id, invitable: self)
+      invite = Invite.new(
+        email: user_email, sender_id: sender.id, invitable: self
+      )
 
       if user_already_exists?
-        invite.recipient_id = User.find_by(email: self.user_email).id
+        invite.recipient_id = User.find_by(email: user_email).id
       end
 
       invite.save!
@@ -100,15 +92,15 @@ class Quotation < ApplicationRecord
   end
 
   def create_party
-    if self.approved? && self.party.nil?
+    if approved? && party.nil?
       party_attributes = {
         quotation: self,
-        title: "Party of #{self.user_email}"
+        title: "Party of #{user_email}"
       }
 
       # User already exists, so we can set him as a party host
       if user_already_exists?
-        party_attributes[:host] = User.find_by(email: self.user_email)
+        party_attributes[:host] = User.find_by(email: user_email)
       end
 
       Party.create!(**party_attributes)

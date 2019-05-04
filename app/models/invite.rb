@@ -25,5 +25,4 @@ class Invite < ApplicationRecord
   def notify_recipient
     InviteMailer.new_user_invite(self).deliver_later
   end
-
 end

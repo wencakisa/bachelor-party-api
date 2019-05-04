@@ -39,32 +39,19 @@ class Party < ApplicationRecord
     users << user
   end
 
-  def as_json(options = {})
-    super(
-      only: %i[id title],
-      methods: %i[customers date],
-      include: {
-        host:       { only: %i[id email] },
-        guide:      { only: %i[id email] },
-        activities: { only: %i[id title] },
-        invites:    { only: %i[invitable_id email] }
-      }
-    )
-  end
-
   private
 
   @@guide_email = ""
 
   def notify_guide_for_party_assignment
-    if self.guide
-      @@guide_email = self.guide.email
+    if guide
+      @@guide_email = guide.email
       PartyMailer.notify_guide_for_party_assignment(self).deliver_later
     end
   end
 
   def notify_guide_for_party_withdrawal
-    if self.guide.nil?
+    if guide.nil?
       PartyMailer.notify_guide_for_party_withdrawal(self, @@guide_email).deliver_later
     end
   end
