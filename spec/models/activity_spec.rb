@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Activity, type: :model do
+describe Activity, type: :model do
   subject(:activity) { create(:activity) }
 
   describe 'associations' do
