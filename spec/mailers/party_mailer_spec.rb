@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe PartyMailer, '#notify_guide_for_party_assignment', type: :mailer do
   let(:guide) { create(:guide) }
   let(:host)  { create(:host) }
@@ -19,8 +17,10 @@ end
 describe PartyMailer, '#notify_guide_for_party_withdrawal', type: :mailer do
   let(:guide) { create(:guide) }
   let(:host)  { create(:host) }
-  let(:party) { create(:party, host: host) }
-  let(:mail)  { PartyMailer.notify_guide_for_party_withdrawal(party, guide.email) }
+  let(:party) { create(:party, guide: guide, host: host) }
+  let(:mail) do
+    PartyMailer.notify_guide_for_party_withdrawal(party, guide.email)
+  end
 
   it 'sets proper action in subject' do
     expect(mail.subject).to include('withdrawn')

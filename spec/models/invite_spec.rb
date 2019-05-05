@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Invite, type: :model do
   describe '#generate_token' do
     it 'generates secure token after created' do

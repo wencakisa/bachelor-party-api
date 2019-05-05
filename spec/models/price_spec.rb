@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Price, type: :model do
   subject(:price) { create(:price) }
 

@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Quotation, 'associations', type: :model do
   subject(:quotation) { create(:quotation) }
 

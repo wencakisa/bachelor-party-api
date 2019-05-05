@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Party, '#customers', type: :model do
   subject(:party) { create(:party) }
   let(:user) { create(:user) }

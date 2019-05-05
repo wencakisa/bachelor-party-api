@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe InviteMailer, '#new_user_invite', type: :mailer do
   let(:invite) { create(:invite) }
   let(:mail) { InviteMailer.new_user_invite(invite) }
