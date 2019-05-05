@@ -1,7 +1,9 @@
 FactoryBot.define do
   factory :party do
-    initialize_with do
-      create(:invite).invitable.party
+    transient do
+      invite { create(:invite) }
     end
+
+    initialize_with { invite.invitable.party }
   end
 end
