@@ -80,7 +80,7 @@ class Quotation < ApplicationRecord
 
     sender = User.by_role(:admin).first
 
-    invite = Invite.new(
+    self.invite = Invite.new(
       email: user_email, sender_id: sender.id, invitable: self
     )
 
@@ -97,6 +97,6 @@ class Quotation < ApplicationRecord
     # User already exists, so we can set him as a party host
     host ||= User.find_by(email: user_email) if user_already_exists?
 
-    Party.from_quotation(self, host)
+    self.party = Party.from_quotation(self, host)
   end
 end
