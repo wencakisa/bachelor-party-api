@@ -39,19 +39,19 @@ class Quotation < ApplicationRecord
 
   def activities_have_available_prices?
     activities.each do |activity|
-      if activity.prices.empty?
-        errors.add(
-          :activities,
-          'should have available prices in order to request them'
-        )
-      end
+      next unless activity.prices.empty?
+
+      errors.add(
+        :activities,
+        'should have available prices in order to request them'
+      )
     end
   end
 
   def activites_have_single_chosen_price?
-    if activities.size != prices.size
-      errors.add(:activities, 'should have a single price for each one')
-    end
+    return if activities.size == prices.size
+
+    errors.add(:activities, 'should have a single price for each one')
   end
 
   def prices_are_valid_for_each_activity?
@@ -60,12 +60,12 @@ class Quotation < ApplicationRecord
     activities.each_with_index do |activity, idx|
       price = prices[idx]
 
-      unless activity.prices.include?(price)
-        errors.add(
-          :price,
-          "id #{price.id} is not valid for the activity with id #{activity.id}"
-        )
-      end
+      next if activity.prices.include?(price)
+
+      errors.add(
+        :price,
+        "id #{price.id} is not valid for the activity with id #{activity.id}"
+      )
     end
   end
 
@@ -76,34 +76,27 @@ class Quotation < ApplicationRecord
   end
 
   def invite_user_from_email
-    if approved? && invite.nil?
-      sender = User.by_role(:admin).first
+    return unless approved? && invite.nil?
 
-      invite = Invite.new(
-        email: user_email, sender_id: sender.id, invitable: self
-      )
+    sender = User.by_role(:admin).first
 
-      if user_already_exists?
-        invite.recipient_id = User.find_by(email: user_email).id
-      end
+    invite = Invite.new(
+      email: user_email, sender_id: sender.id, invitable: self
+    )
 
-      invite.save!
+    if user_already_exists?
+      invite.recipient_id = User.find_by(email: user_email).id
     end
+
+    invite.save!
   end
 
   def create_party
-    if approved? && party.nil?
-      party_attributes = {
-        quotation: self,
-        title: "Party of #{user_email}"
-      }
+    return unless approved? && party.nil?
 
-      # User already exists, so we can set him as a party host
-      if user_already_exists?
-        party_attributes[:host] = User.find_by(email: user_email)
-      end
+    # User already exists, so we can set him as a party host
+    host ||= User.find_by(email: user_email) if user_already_exists?
 
-      Party.create!(**party_attributes)
-    end
+    Party.from_quotation(self, host)
   end
 end
