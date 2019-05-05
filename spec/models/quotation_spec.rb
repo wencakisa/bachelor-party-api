@@ -82,3 +82,21 @@ describe Quotation, 'group size validations', type: :model do
     end
   end
 end
+
+describe Quotation, 'create party', type: :model do
+  subject(:quotation) { create(:quotation) }
+
+  context 'when approved' do
+    it 'generates an invite with the quotation user email' do
+      expect { quotation.approved! }.to change { Invite.count }.by(1)
+    end
+
+    it 'sets recipient id if user already exists' do
+      user = create(:user)
+      quotation.update_attributes(user_email: user.email)
+      quotation.approved!
+
+      expect(quotation.invite.recipient_id).to eq user.id
+    end
+  end
+end
