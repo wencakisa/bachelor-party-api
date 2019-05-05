@@ -27,6 +27,8 @@ class Party < ApplicationRecord
                :notify_guide_for_party_withdrawal,
                on: :update
 
+  attr_accessor :guide_email
+
   def customers
     users
   end
@@ -55,18 +57,18 @@ class Party < ApplicationRecord
 
   private
 
-  @@guide_email = ''
-
   def notify_guide_for_party_assignment
     return unless guide
 
-    @@guide_email = guide.email
+    self.guide_email = guide.email
     PartyMailer.notify_guide_for_party_assignment(self).deliver_later
   end
 
   def notify_guide_for_party_withdrawal
-    return unless guide.nil?
+    return if guide
 
-    PartyMailer.notify_guide_for_party_withdrawal(self, @@guide_email).deliver_later
+    PartyMailer
+      .notify_guide_for_party_withdrawal(self, guide_email)
+      .deliver_later
   end
 end
