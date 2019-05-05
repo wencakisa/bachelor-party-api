@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :party do
-    title { "MyString" }
-    quotation { nil }
-    datetime { "2019-02-02 22:24:09" }
+    initialize_with do
+      create(:invite).invitable.party
+    end
   end
 end
