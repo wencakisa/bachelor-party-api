@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Price, type: :model do
+describe Price, type: :model do
   subject(:price) { create(:price) }
 
   describe 'associations' do
