@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :invite do
-    invitable { nil }
-    token { "MyString" }
-    status { false }
+    invitable { create(:quotation) }
+    sender    { create(:user) }
+    email     { Faker::Internet.email }
   end
 end
