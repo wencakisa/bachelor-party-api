@@ -6,5 +6,9 @@ FactoryBot.define do
     factory :admin do
       role { :admin }
     end
+
+    factory :guide do
+      role { :guide }
+    end
   end
 end
