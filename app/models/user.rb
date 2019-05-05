@@ -48,26 +48,25 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.claim_invitation(claim_params)
-    invite = Invite.find_by_token claim_params[:invitation_token]
-    return if invite.nil?
+  class << self
+    def claim_invitation(claim_params)
+      invite = Invite.find_by_token claim_params[:invitation_token]
+      return if invite.nil?
 
-    claim_params.delete(:token)
+      claim_params.delete(:token)
 
-    user_password_from_params = {
-      password: claim_params[:password],
-      password_confirmation: claim_params[:password_confirmation]
-    }
+      user_password_from_params = claim_params
+                                  .slice(:password, :password_confirmation)
 
-    user = create!(email: invite.email, **user_password_from_params)
+      user = create!(email: invite.email, **user_password_from_params)
+      user.process_invite(invite)
 
-    invite.recipient = user
-    invite.status = :accepted
-    invite.save
+      user
+    end
+  end
 
-    invitable = invite.invitable
-    invitable.process_user user
-
-    user
+  def process_invite(invite)
+    invite.update_attributes(recipient: self, status: :accepted)
+    invite.invitable.process_user self
   end
 end
