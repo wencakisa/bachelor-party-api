@@ -39,20 +39,34 @@ class Party < ApplicationRecord
     users << user
   end
 
-  private
+  class << self
+    def title_from_email(email)
+      "Party of #{email}"
+    end
 
-  @@guide_email = ""
-
-  def notify_guide_for_party_assignment
-    if guide
-      @@guide_email = guide.email
-      PartyMailer.notify_guide_for_party_assignment(self).deliver_later
+    def from_quotation(quotation, host = nil)
+      create!(
+        quotation: quotation,
+        title: title_from_email(quotation.user_email),
+        host: host
+      )
     end
   end
 
+  private
+
+  @@guide_email = ''
+
+  def notify_guide_for_party_assignment
+    return unless guide
+
+    @@guide_email = guide.email
+    PartyMailer.notify_guide_for_party_assignment(self).deliver_later
+  end
+
   def notify_guide_for_party_withdrawal
-    if guide.nil?
-      PartyMailer.notify_guide_for_party_withdrawal(self, @@guide_email).deliver_later
-    end
+    return unless guide.nil?
+
+    PartyMailer.notify_guide_for_party_withdrawal(self, @@guide_email).deliver_later
   end
 end
