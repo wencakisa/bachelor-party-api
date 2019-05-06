@@ -1,5 +1,3 @@
-
-
 class ErrorObjects
   def full_messages
     {}
@@ -23,12 +21,17 @@ describe Response, type: :controller do
     def error_action
       error_response MockObject.new
     end
+
+    def not_found_action
+      not_found
+    end
   end
 
   before do
     routes.draw do
-      get 'ok_action'    => 'anonymous#ok_action'
-      get 'error_action' => 'anonymous#error_action'
+      get 'ok_action'        => 'anonymous#ok_action'
+      get 'error_action'     => 'anonymous#error_action'
+      get 'not_found_action' => 'anonymous#not_found_action'
     end
   end
 
@@ -37,7 +40,7 @@ describe Response, type: :controller do
 
     it 'returns json response with ok status' do
       expect(response).to be_truthy
-      expect(response.status).to eq 200
+      expect(response).to have_http_status(:ok)
     end
   end
 
@@ -45,7 +48,16 @@ describe Response, type: :controller do
     before { get :error_action }
 
     it 'returns json response with error status' do
-      expect(response.status).to eq 422
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
+
+  describe '#not_found' do
+    before { get :not_found_action }
+
+    it 'returns json response with not found error' do
+      expect(response).to have_http_status(:not_found)
+      expect(json_body['error']).to eq 'Not found.'
     end
   end
 end
