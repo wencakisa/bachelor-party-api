@@ -1,5 +1,5 @@
-require 'helpers/api_helper'
-require 'helpers/auth_helper'
+require 'support/api_helper'
+require 'support/auth_helper'
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
