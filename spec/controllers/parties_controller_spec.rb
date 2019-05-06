@@ -23,48 +23,109 @@ describe PartiesController, type: :controller do
         auth_request admin
         get :index
 
-        expect(json_body.size).to eq 4
+        expect(json_body.size).to eq 3
       end
     end
   end
 
-  let(:party) { create(:party, host: user) }
+  let(:party) { create(:party) }
   let(:params) do
-    {
-      id: party.id
-    }
+    { id: party.id }
   end
 
   describe '#show' do
-    context 'when party exists' do
-      it 'returns the correct party' do
+    context 'when user is host' do
+      before { party.update_attributes(host: user) }
+      context 'and party exists' do
+        it 'returns the correct party' do
+          auth_request user
+          get :show, params: params
+
+          expect(json_body['title']).to eq party.title
+        end
+      end
+
+      context 'and party does not exist' do
+        it 'raises a not found error' do
+          auth_request user
+          get :show, params: { id: 0 }
+
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+
+    context 'when user is guide' do
+      before do
+        party.update_attributes(guide: user)
         auth_request user
         get :show, params: params
+      end
 
+      it 'returns the party' do
         expect(json_body['title']).to eq party.title
+      end
+    end
+
+    context 'when user is unauthorized' do
+      it 'returns an unauthorized response body' do
+        get :show, params: params
+        expect(response).to have_http_status(:unauthorized)
       end
     end
   end
 
   describe '#update' do
-    context 'when party is updated successfully' do
-      it 'returns the updated party' do
-        auth_request user
+    before { auth_request user }
 
-        headers = { 'CONTENT_TYPE' => 'application/json' }
-        put :update, "{ party: { title: 'ops' } }", params: params, headers: headers
+    context 'when passed params are valid' do
+      let(:update_params) { params.merge(party: { title: 'test' }) }
 
-        expect(party.title).to eq 'ops'
+      context 'when user has access permission' do
+        before { party.update_attributes(host: user) }
+
+        it 'updates the party' do
+          put :update, params: update_params
+
+          expect(response).to have_http_status(:ok)
+          expect(json_body['title']).to eq 'test'
+        end
+      end
+
+      context 'when user is not the party host' do
+        it 'renders a forbidden error' do
+          put :update, params: update_params
+
+          expect(response).to have_http_status(:forbidden)
+        end
       end
     end
 
-    context 'when party is not updated successfully' do
+    context 'when passed params are invalid' do
+      let(:update_params) { params.merge(party: { title: '' }) }
 
+      before { party.update_attributes(host: user) }
+
+      it 'renders an unprocessable entity error' do
+        put :update, params: update_params
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(json_body['errors']).to eq ["Title can't be blank"]
+      end
     end
   end
 
   describe '#destroy' do
+    before { auth_request user }
 
+    context 'when user is the party host' do
+      before { party.update_attributes(host: user) }
+
+      it 'destroys the party' do
+        delete :destroy, params: params
+
+        expect(response).to have_http_status(:no_content)
+      end
+    end
   end
-
 end
