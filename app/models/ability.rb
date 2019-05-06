@@ -5,15 +5,9 @@ class Ability
     user ||= User.new # guest user (not logged in)
 
     can :read, Activity
-
     can %i[show create], Quotation
-    # Users can update quotations who are still
-    # waiting to be approved by the admin
+    # Users can update quotations who are pending to be approved by the admin
     can :update, Quotation, pending: true
-
-    if user.admin?
-      can :manage, :all
-    end
 
     if user.customer?
       can :read, Quotation, approved: true
@@ -22,9 +16,8 @@ class Ability
       can :manage, Party, host_id: user.id
     end
 
-    if user.guide?
-      can :read, Party
-    end
+    can :read, Party if user.guide?
+    can :manage, :all if user.admin?
 
     # The first argument to `can` is the action you are giving the user
     # permission to do.
