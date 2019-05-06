@@ -75,20 +75,24 @@ class Quotation < ApplicationRecord
     User.exists?(email: user_email)
   end
 
-  def invite_user_from_email
-    return unless approved? && invite.nil?
+  def sender
+    User.by_role(:admin).first
+  end
 
-    sender = User.by_role(:admin).first
-
-    self.invite = Invite.new(
-      email: user_email, sender_id: sender.id, invitable: self
-    )
+  def generate_invite
+    self.invite = Invite.new(email: user_email, sender_id: sender.id, invitable: self)
 
     if user_already_exists?
       invite.recipient_id = User.find_by(email: user_email).id
     end
 
     invite.save!
+  end
+
+  def invite_user_from_email
+    return unless approved? && invite.nil?
+
+    generate_invite
   end
 
   def create_party
