@@ -5,11 +5,14 @@ class InvitesController < ApplicationController
     @invite = Invite.new(invite_params)
     @invite.sender_id = current_user.id
 
-    if @invite.save
-      render json: { success: ['Invite sent!'] }, status: :created
-    else
-      render json: { errors: ['Invite could not be sent.'] },
-             status: :unprocessable_entity
+    begin
+      if @invite.save
+        json_response @invite, :created
+      else
+        error_response @invite
+      end
+    rescue NameError
+      render json: { errors: ['Unable to send invite'] }, status: :bad_request
     end
   end
 
