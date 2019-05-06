@@ -83,6 +83,7 @@ end
 
 describe Quotation, 'create party', type: :model do
   subject(:quotation) { create(:quotation) }
+  before { create(:admin) }
 
   context 'when approved' do
     it 'generates an invite with the quotation user email' do
