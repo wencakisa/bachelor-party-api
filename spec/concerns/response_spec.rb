@@ -57,7 +57,7 @@ describe Response, type: :controller do
 
     it 'returns json response with not found error' do
       expect(response).to have_http_status(:not_found)
-      expect(json_body['error']).to eq 'Not found.'
+      expect(json_body['error']).to eq 'Not found'
     end
   end
 end

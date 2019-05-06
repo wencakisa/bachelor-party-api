@@ -8,12 +8,12 @@ module Response
   end
 
   def not_found
-    permission_error_response 'Not found.', :not_found
+    permission_error_response 'Not found', :not_found
   end
 
   def forbidden
     permission_error_response(
-      'You are not authorized to access this page.',
+      'You are not authorized to access this page',
       :forbidden
     )
   end
