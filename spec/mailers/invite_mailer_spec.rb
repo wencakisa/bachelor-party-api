@@ -1,6 +1,7 @@
 describe InviteMailer, '#new_user_invite', type: :mailer do
-  let(:invite) { create(:invite) }
-  let(:mail) { InviteMailer.new_user_invite(invite) }
+  let(:invitable) { create(:quotation) }
+  let(:invite)    { create(:invite, invitable: invitable) }
+  let(:mail)      { InviteMailer.new_user_invite(invite) }
 
   it 'appends invitation token in url' do
     expect(mail.body.raw_source).to include('invitation_token=')
@@ -11,7 +12,7 @@ describe InviteMailer, '#new_user_invite', type: :mailer do
   end
 
   context 'when invite request origin is a quotation' do
-    let(:quotation) { invite.invitable }
+    let(:quotation) { invitable }
 
     it 'contains quotation status in subject' do
       expect(mail.subject).to include(quotation.status)
@@ -28,10 +29,12 @@ describe InviteMailer, '#new_user_invite', type: :mailer do
     end
   end
 
-  # TODO: Make invite factory flexible for different invitables
-  # context 'when invite request origin is a party' do
-  #   it 'contains party title in subject' do
-  #     expect(mail.subject).to include(party.title)
-  #   end
-  # end
+  context 'when invite request origin is a party' do
+    let!(:invitable) { create(:party) }
+    let(:party)      { invitable }
+
+    it 'contains party title in subject' do
+      expect(mail.subject).to include(party.title)
+    end
+  end
 end

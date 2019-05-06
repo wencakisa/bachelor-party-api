@@ -4,6 +4,8 @@ FactoryBot.define do
     sender    { create(:user) }
     email     { Faker::Internet.email }
 
-    after(:create) { |invite| invite.invitable.approved! }
+    after(:create) do |invite|
+      invite.invitable.approved! if invite.invitable_type == 'Quotation'
+    end
   end
 end
