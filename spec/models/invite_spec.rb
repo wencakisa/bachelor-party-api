@@ -17,14 +17,4 @@ describe Invite, type: :model do
       expect(invite.recipient.email).to eq email
     end
   end
-
-  # describe '#notify_recipient' do
-  #   it 'notifies recipient when invite is generated' do
-  #     invite = create(:invite)
-
-  #     message_delivery = instance_double(ActionMailer::MessageDelivery)
-  #     expect(InviteMailer).to receive(:new_user_invite).with(invite).and_return(message_delivery)
-  #     allow(message_delivery).to receive(:deliver_later)
-  #   end
-  # end
 end
