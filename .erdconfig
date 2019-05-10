@@ -1,17 +1,11 @@
 attributes:
   - content
-  - foreign_key
-  - timestamps
   - primary_keys
-  - inheritance
+  - foreign_keys
 filename: bachelor_party_diagram
 indirect: true
-inheritance: true
 markup: true
 notation: simple
-orientation: horizontal
+splines: ortho
 polymorphism: true
 title: Bachelor Party API Domain Model
-prepend_primary: false
-cluster: false
-splines: spline
