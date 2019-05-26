@@ -57,6 +57,8 @@ class User < ActiveRecord::Base
 
       user_password_from_params = claim_params
                                   .slice(:password, :password_confirmation)
+                                  .to_h
+                                  .symbolize_keys
 
       user = create!(email: invite.email, **user_password_from_params)
       user.process_invite(invite)
