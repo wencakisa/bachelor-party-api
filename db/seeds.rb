@@ -45,6 +45,7 @@ activities_data = [
     guide_included: true,
     duration: 2,
     time_type: :night,
+    image_url: 'https://image.redbull.com/rbcom/052/2017-09-01/71a7564c-7a91-4772-b084-884cb422ebcb/0012/0/0/179/1155/1911/1500/1/the-2017-indian-national-karting-championship.jpg',
     prices_attributes: [
       {
         amount: 23,
@@ -63,6 +64,7 @@ activities_data = [
     guide_included: true,
     duration: 1,
     time_type: :day,
+    image_url: 'https://i.ytimg.com/vi/uIKUPV2rVC8/maxresdefault.jpg',
     prices_attributes: [
       {
         amount: 12,
@@ -81,12 +83,13 @@ activities_data = [
     transfer_included: true,
     duration: 3,
     time_type: :day,
+    image_url: 'https://hawaiiwatersportscenter.com/wp-content/uploads/2015/02/HWS_Waterski.jpg',
     prices_attributes: [
       {
         amount: 20
       }
     ]
-  },
+  }
 ]
 
 activities_data.each do |activity_data|
