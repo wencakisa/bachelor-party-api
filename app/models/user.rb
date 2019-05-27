@@ -53,17 +53,24 @@ class User < ActiveRecord::Base
       invite = Invite.find_by_token claim_params[:invitation_token]
       return if invite.nil?
 
-      claim_params.delete(:token)
+      if User.exists?(email: invite.email)
+        user = User.find_by_email invite.email
+      else
+        claim_params.delete(:token)
+        password_params = fetch_password_from_invite_params(claim_params)
 
-      user_password_from_params = claim_params
-                                  .slice(:password, :password_confirmation)
-                                  .to_h
-                                  .symbolize_keys
+        user = create!(email: invite.email, **password_params)
+      end
 
-      user = create!(email: invite.email, **user_password_from_params)
       user.process_invite(invite)
 
       user
+    end
+
+    private
+
+    def fetch_password_from_invite_params(params)
+      params.slice(:password, :password_confirmation).to_h.symbolize_keys
     end
   end
 
