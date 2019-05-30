@@ -57,6 +57,7 @@ class ActivitiesController < ApplicationController
       :guide_included,
       :duration,
       :time_type,
+      :image_url,
       prices_attributes: %i[id amount options _destroy]
     )
   end
