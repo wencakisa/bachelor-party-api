@@ -3,8 +3,8 @@ class PartyMailer < ApplicationMailer
     send_mail(party, party.guide.email, 'assigned to')
   end
 
-  def notify_guide_for_party_withdrawal(party, guide_email)
-    send_mail(party, guide_email, 'withdrawn from')
+  def notify_guide_for_party_withdrawal(party)
+    send_mail(party, party.last_guide_email, 'withdrawn from')
   end
 
   private
