@@ -62,7 +62,7 @@ class Party < ApplicationRecord
   end
 
   def notify_guide_for_party_withdrawal
-    return if guide
+    return if guide || last_guide_email.nil?
 
     PartyMailer.notify_guide_for_party_withdrawal(self).deliver_later
   end
