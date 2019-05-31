@@ -3,6 +3,7 @@ Hello,
 <% if @party %>
   You have been invited to join the <%= @party.title %> by the host himself!
   Do not hesitate and join us here:
+  <%= @url %>
 <% elsif @quotation %>
   Your quotation for <%= @quotation.date %> has been <%= @quotation.status %> by our admins.
 
@@ -11,10 +12,11 @@ Hello,
     "<%= @quotation.custom_email_message %>"
   <% end %>
 
-  Join us and proceed with your party organization from this link:
+  <% if @quotation.approved? %>
+  	Join us and proceed with your party organization from this link:
+  	<%= @url %>
+  <% end %>
 <% end %>
-
-<%= @url %>
 
 Best wishes,
 Bachelor Party Sofia team

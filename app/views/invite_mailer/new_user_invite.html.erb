@@ -3,6 +3,7 @@
 <% if @party %>
   <p>You have been invited to join the <%= @party.title %> by the host himself!</p>
   <p>Do not hesitate and join us here:</p>
+  <p><%= @url %></p>
 <% elsif @quotation %>
   <p>Your quotation for <%= @quotation.date %> has been <%= @quotation.status %> by our admins.</p>
 
@@ -11,10 +12,11 @@
     <p>"<%= @quotation.custom_email_message %>"</p>
   <% end %>
 
-  <p>Join us and proceed with your party organization from this link:</p>
+  <% if @quotation.approved? %>
+  	<p>Join us and proceed with your party organization from this link:</p>
+  	<p><%= @url %></p>
+  <% end %>
 <% end %>
-
-<p><%= @url %></p>
 
 <p>Best wishes,</p>
 <p>Bachelor Party Sofia team</p>
