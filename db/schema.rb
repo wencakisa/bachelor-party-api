@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_25_211817) do
+ActiveRecord::Schema.define(version: 2019_05_31_080050) do
 
   create_table "activities", force: :cascade do |t|
     t.string "title"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_211817) do
     t.datetime "updated_at", null: false
     t.integer "guide_id"
     t.integer "host_id"
+    t.string "last_guide_email"
     t.index ["guide_id"], name: "index_parties_on_guide_id"
     t.index ["host_id"], name: "index_parties_on_host_id"
     t.index ["quotation_id"], name: "index_parties_on_quotation_id"
