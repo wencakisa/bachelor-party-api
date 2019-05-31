@@ -90,7 +90,7 @@ class Quotation < ApplicationRecord
   end
 
   def invite_user_from_email
-    return if pending? && invite
+    return unless (approved? || rejected?) && invite.nil?
 
     generate_invite
   end
