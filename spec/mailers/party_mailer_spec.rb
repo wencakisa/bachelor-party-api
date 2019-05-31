@@ -19,7 +19,7 @@ describe PartyMailer, '#notify_guide_for_party_withdrawal', type: :mailer do
   let(:host)  { create(:host) }
   let(:party) { create(:party, guide: guide, host: host) }
   let(:mail) do
-    PartyMailer.notify_guide_for_party_withdrawal(party, guide.email)
+    PartyMailer.notify_guide_for_party_withdrawal(party)
   end
 
   it 'sets proper action in subject' do
